@@ -2,6 +2,7 @@
 #include "str.h"
 
 void _add_more_size(STRING *s);
+int _is_max_size(STRING *);
 
 
 /* リソース確保＆初期化（中身を空文字列にする） */
@@ -32,7 +33,7 @@ void str_add(STRING *s, char * const str){
     int i=0;
     while(1){
         //次の文字を入れるサイズがなければ一定サイズを追加する。（null文字用に+1サイズを確保する）
-        if(s->max_size == s->count+1){
+        if(_is_max_size(s)){
             _add_more_size(s);
         }
         s->string[start+i] = str[i];
@@ -51,14 +52,14 @@ STRING *str_extract(STRING * s1, const int num1, const int num2){
     int i,j;      //i:コピー先文字列用カウンタ, j:コピー元文字列用カウンタ
     for(i=0, j=num1; i<num2; i++,j++){
         //次の文字を入れるサイズがなければ一定サイズを追加する
-        if(s2->max_size == s2->count+1){
+        if(_is_max_size(s2)){
             _add_more_size(s2);
         }
         s2->string[i] = s1->string[j];
         s2->count++;
     }
     //最後にnull文字を加える
-    if(s2->max_size == s2->count+1){
+    if(_is_max_size(s2)){
         _add_more_size(s2);
     }
     s2->string[i+1] = '\0';
@@ -85,4 +86,13 @@ void str_destroy(STRING *s){
 void _add_more_size(STRING *s){
     s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
     s->max_size += ADD_BUFFER_SIZE;
+}
+
+//文字列保持用のメモリサイズが満タンなら1を、そうでなければ0を返す
+int _is_max_size(STRING *s){
+    if(s->max_size == s->count+1){
+        return 1;
+    }else{
+        return 0;
+    }
 }
