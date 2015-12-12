@@ -19,13 +19,13 @@ STRING *str_create(){
     return s;
 }
 
-///* sにstrの文字列をセット */
+/* sにstrの文字列をセット */
 void str_set(STRING *s, char * const str){
     s->count = 0;
     str_add(s, str);
 }
 
-///* 文字列追加 */
+/* 文字列追加 */
 void str_add(STRING *s, char * const str){
     int start = s->count;   //文字列追加開始位置
     int i=0;

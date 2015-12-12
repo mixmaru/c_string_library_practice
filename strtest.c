@@ -1,7 +1,3 @@
-//str_create()でstatic STRING s;としていると、
-//s2を作ろうとしてstr_create()を呼ぶたびにs1の内容が消えてしまう。
-//static は同じ名前は使えない??
-
 #include <stdio.h>
 #include "str.h"
 
