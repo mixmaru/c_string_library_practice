@@ -12,7 +12,7 @@ STRING *str_create(){
     s = (STRING *)malloc(sizeof(STRING));
     s->string = (char *)malloc(INITIALIZE_BUFFER_SIZE);
     s->max_size = INITIALIZE_BUFFER_SIZE;
-    s->count = 1;
+    s->count = 0;
     s->string[0] = '\0';
     return s;
 }
@@ -23,22 +23,21 @@ void str_set(STRING *s, char * const str){
 }
 
 ///* 文字列追加 */
-//メモリアドレスを、s->stringをs->count-1の位置(null文字を除くため)と,
-//strの先頭位置から勧めながらstrの文字をs->stringにコピーしていく。(null文字までコピーする)
+//strの先頭位置から進めながらstrの文字をs->stringにコピーしていく。(null文字までコピーする)
 //サイズが足りなければ追加する
 //文字をコピーするとき、s->countをインクリメントする
 void str_add(STRING *s, char * const str){
-    s->count--;//null文字分をデクリメント
-    int start = s->count;
+//    s->count--;//null文字分をデクリメント
+    int start = s->count;   //文字列追加開始位置
     int i=0;
     while(1){
-        //次の文字を入れるサイズがなければ一定サイズを追加する。
-        if(s->max_size == s->count){
+        //次の文字を入れるサイズがなければ一定サイズを追加する。（null文字用に+1サイズを確保する）
+        if(s->max_size == s->count+1){
             _add_more_size(s);
         }
         s->string[start+i] = str[i];
-        s->count++;
         if(str[i] == '\0') break;
+        s->count++;
         i++;
     }
 }
@@ -48,23 +47,21 @@ STRING *str_extract(STRING * s1, const int num1, const int num2){
     //s2を初期化する
     STRING *s2;
     s2 = str_create();
-    //s1->stringの先頭アドレスのnum1番目からnum2番目までの文字をコピーしていく。
-    //最後に'\0'をセットする。
-    s2->count = 0;
-    int i = 0;
-    int j = num1;
+    //s1->stringのstart番目からnum個の文字をコピーしていく。
+    int i,j;      //i:コピー先文字列用カウンタ, j:コピー元文字列用カウンタ
     for(i=0, j=num1; i<num2; i++,j++){
         //次の文字を入れるサイズがなければ一定サイズを追加する
-        if(s2->max_size == s2->count){
+        if(s2->max_size == s2->count+1){
             _add_more_size(s2);
         }
         s2->string[i] = s1->string[j];
         s2->count++;
     }
-    if(s2->max_size == s2->count){
+    //最後にnull文字を加える
+    if(s2->max_size == s2->count+1){
         _add_more_size(s2);
     }
-    s2->string[++s2->count] = '\0';
+    s2->string[i+1] = '\0';
     return s2;
 }
 
@@ -75,7 +72,7 @@ char *str_value(STRING *s){
 
 /* 文字列の長さを返す */
 int str_length(STRING *s){
-    return s->count - 1;//null文字分は取り除く
+    return s->count;//null文字分は取り除く
 }
 
 /* リソース開放 */

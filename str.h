@@ -2,9 +2,9 @@
 #define ADD_BUFFER_SIZE 10
 
 typedef struct{
-    char *string;
-    int max_size;
-    int count;
+    char *string;   //文字列ポインタ
+    int max_size;   //文字列用確保メモリサイズ
+    int count;      //文字数(null文字を含まない)
 } STRING;
 
 /* リソース確保＆初期化（中身を空文字列にする） */
