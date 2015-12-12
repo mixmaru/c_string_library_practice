@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "str.h"
 
+void _add_more_size(STRING *s);
+
 
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
@@ -30,9 +32,9 @@ void str_add(STRING *s, char * const str){
     int start = s->count;
     int i=0;
     while(1){
+        //次の文字を入れるサイズがなければ一定サイズを追加する。
         if(s->max_size == s->count){
-            s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
-            s->max_size += ADD_BUFFER_SIZE;
+            _add_more_size(s);
         }
         s->string[start+i] = str[i];
         s->count++;
@@ -52,16 +54,15 @@ STRING *str_extract(STRING * s1, const int num1, const int num2){
     int i = 0;
     int j = num1;
     for(i=0, j=num1; i<num2; i++,j++){
+        //次の文字を入れるサイズがなければ一定サイズを追加する
         if(s2->max_size == s2->count){
-            s2->string = (char *)realloc(s2->string, s2->max_size + ADD_BUFFER_SIZE);
-            s2->max_size += ADD_BUFFER_SIZE;
+            _add_more_size(s2);
         }
         s2->string[i] = s1->string[j];
         s2->count++;
     }
     if(s2->max_size == s2->count){
-        s2->string = (char *)realloc(s2->string, s2->max_size + ADD_BUFFER_SIZE);
-        s2->max_size += ADD_BUFFER_SIZE;
+        _add_more_size(s2);
     }
     s2->string[++s2->count] = '\0';
     return s2;
@@ -81,4 +82,10 @@ int str_length(STRING *s){
 void str_destroy(STRING *s){
     free(s->string);
     free(s);
+}
+
+//文字列保持用のメモリサイズを追加
+void _add_more_size(STRING *s){
+    s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
+    s->max_size += ADD_BUFFER_SIZE;
 }
