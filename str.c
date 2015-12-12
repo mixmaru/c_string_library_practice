@@ -20,6 +20,7 @@ STRING *str_create(){
 
 ///* sにstrの文字列をセット */
 void str_set(STRING *s, char * const str){
+    s->count = 0;
     str_add(s, str);
 }
 
