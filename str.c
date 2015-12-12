@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include "str.h"
 
-void _add_more_size(STRING *s);
-int _is_max_size(STRING *);
+static void _add_more_size(STRING *s);
+static int _is_max_size(STRING *);
 
 
 /* リソース確保＆初期化（中身を空文字列にする） */
@@ -80,13 +80,13 @@ void str_destroy(STRING *s){
 }
 
 //文字列保持用のメモリサイズを追加
-void _add_more_size(STRING *s){
+static void _add_more_size(STRING *s){
     s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
     s->max_size += ADD_BUFFER_SIZE;
 }
 
 //文字列保持用のメモリサイズが満タンなら1を、そうでなければ0を返す
-int _is_max_size(STRING *s){
+static int _is_max_size(STRING *s){
     if(s->max_size == s->count+1){//(null文字用サイズのためにs->count+1となる)
         return 1;
     }else{
