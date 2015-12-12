@@ -26,15 +26,11 @@ void str_set(STRING *s, char * const str){
 }
 
 ///* 文字列追加 */
-//strの先頭位置から進めながらstrの文字をs->stringにコピーしていく。(null文字までコピーする)
-//サイズが足りなければ追加する
-//文字をコピーするとき、s->countをインクリメントする
 void str_add(STRING *s, char * const str){
-//    s->count--;//null文字分をデクリメント
     int start = s->count;   //文字列追加開始位置
     int i=0;
     while(1){
-        //次の文字を入れるサイズがなければ一定サイズを追加する。（null文字用に+1サイズを確保する）
+        //次の文字を入れるサイズがなければ一定サイズを追加する。
         if(_is_max_size(s)){
             _add_more_size(s);
         }
@@ -47,10 +43,9 @@ void str_add(STRING *s, char * const str){
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
 STRING *str_extract(STRING * s1, const int num1, const int num2){
-    //s2を初期化する
     STRING *s2;
     s2 = str_create();
-    //s1->stringのstart番目からnum個の文字をコピーしていく。
+
     int i,j;      //i:コピー先文字列用カウンタ, j:コピー元文字列用カウンタ
     for(i=0, j=num1; i<num2; i++,j++){
         //次の文字を入れるサイズがなければ一定サイズを追加する
@@ -92,7 +87,7 @@ void _add_more_size(STRING *s){
 
 //文字列保持用のメモリサイズが満タンなら1を、そうでなければ0を返す
 int _is_max_size(STRING *s){
-    if(s->max_size == s->count+1){
+    if(s->max_size == s->count+1){//(null文字用サイズのためにs->count+1となる)
         return 1;
     }else{
         return 0;
