@@ -8,13 +8,14 @@ int _is_max_size(STRING *);
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
-    //構造体のプロパティを初期化してアドレスを返す
-    static STRING *s;
+    STRING *s;
     s = (STRING *)malloc(sizeof(STRING));
+
+    //sの初期化
     s->string = (char *)malloc(INITIALIZE_BUFFER_SIZE);
+    s->string[0] = '\0';
     s->max_size = INITIALIZE_BUFFER_SIZE;
     s->count = 0;
-    s->string[0] = '\0';
     return s;
 }
 
