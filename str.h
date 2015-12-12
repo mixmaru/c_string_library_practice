@@ -1,3 +1,6 @@
+#ifndef STR_H
+#define STR_H
+
 #define INITIALIZE_BUFFER_SIZE 10
 #define ADD_BUFFER_SIZE 10
 
@@ -27,3 +30,5 @@ int str_length(STRING *);
 
 /* リソース開放 */
 void str_destroy(STRING *);
+
+#endif //STR_H
