@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "str.h"
 
+static void _str_init(STRING *);
 static void _add_more_size(STRING *);
 static int _is_max_size(STRING *);
 
@@ -10,17 +11,13 @@ STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
     STRING *s;
     s = (STRING *)malloc(sizeof(STRING));
-
-    //sの初期化
-    s->string = (char *)calloc(INITIALIZE_BUFFER_SIZE, sizeof(char));
-    s->max_size = INITIALIZE_BUFFER_SIZE;
-    s->count = 0;
+    _str_init(s);
     return s;
 }
 
 /* sにstrの文字列をセット */
 void str_set(STRING *s, char * const str){
-    s->count = 0;
+    _str_init(s);
     str_add(s, str);
 }
 
@@ -68,6 +65,13 @@ int str_length(STRING *s){
 void str_destroy(STRING *s){
     free(s->string);
     free(s);
+}
+
+//STRING構造体の初期化を行う
+static void _str_init(STRING *s){
+    s->string = (char *)calloc(INITIALIZE_BUFFER_SIZE, sizeof(char));
+    s->max_size = INITIALIZE_BUFFER_SIZE;
+    s->count = 0;
 }
 
 //文字列保持用のメモリサイズを追加。追加部分はゼロフィルする。
