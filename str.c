@@ -12,8 +12,7 @@ STRING *str_create(){
     s = (STRING *)malloc(sizeof(STRING));
 
     //sの初期化
-    s->string = (char *)malloc(INITIALIZE_BUFFER_SIZE);
-    s->string[0] = '\0';
+    s->string = (char *)calloc(INITIALIZE_BUFFER_SIZE, sizeof(char));
     s->max_size = INITIALIZE_BUFFER_SIZE;
     s->count = 0;
     return s;
@@ -28,16 +27,13 @@ void str_set(STRING *s, char * const str){
 /* 文字列追加 */
 void str_add(STRING *s, char * const str){
     int start = s->count;   //文字列追加開始位置
-    int i=0;
-    while(1){
+    for(int i=0; str[i]!='\0'; i++){
         //次の文字を入れるサイズがなければ一定サイズを追加する。
         if(_is_max_size(s)){
             _add_more_size(s);
         }
         s->string[start+i] = str[i];
-        if(str[i] == '\0') break;
         s->count++;
-        i++;
     }
 }
 
@@ -55,11 +51,6 @@ STRING *str_extract(STRING * s1, const int num1, const int num2){
         s2->string[i] = s1->string[j];
         s2->count++;
     }
-    //最後にnull文字を加える
-    if(_is_max_size(s2)){
-        _add_more_size(s2);
-    }
-    s2->string[i+1] = '\0';
     return s2;
 }
 
@@ -79,9 +70,13 @@ void str_destroy(STRING *s){
     free(s);
 }
 
-//文字列保持用のメモリサイズを追加
+//文字列保持用のメモリサイズを追加。追加部分はゼロフィルする。
 static void _add_more_size(STRING *s){
     s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
+    for(int i=0; i<ADD_BUFFER_SIZE; i++){
+        printf("add 0 s->string[%d] = 0\n", s->max_size+i);
+        s->string[s->max_size + i] = '\0';
+    }
     s->max_size += ADD_BUFFER_SIZE;
 }
 
