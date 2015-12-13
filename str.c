@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "str.h"
 
-static void _add_more_size(STRING *s);
+static void _add_more_size(STRING *);
 static int _is_max_size(STRING *);
 
 
@@ -74,7 +74,6 @@ void str_destroy(STRING *s){
 static void _add_more_size(STRING *s){
     s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
     for(int i=0; i<ADD_BUFFER_SIZE; i++){
-        printf("add 0 s->string[%d] = 0\n", s->max_size+i);
         s->string[s->max_size + i] = '\0';
     }
     s->max_size += ADD_BUFFER_SIZE;
