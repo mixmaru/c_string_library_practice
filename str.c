@@ -15,7 +15,7 @@ STRING *str_create(){
     return s;
 }
 
-/* sにstrの文字列をセット */
+/* 文字列をセット */
 void str_set(STRING *s, char * const str){
     _str_init(s);
     str_add(s, str);
@@ -58,7 +58,7 @@ char *str_value(STRING *s){
 
 /* 文字列の長さを返す */
 int str_length(STRING *s){
-    return s->count;//null文字分は取り除く
+    return s->count;
 }
 
 /* リソース開放 */
@@ -67,14 +67,14 @@ void str_destroy(STRING *s){
     free(s);
 }
 
-//STRING構造体の初期化を行う
+/*STRING構造体の初期化を行う*/
 static void _str_init(STRING *s){
     s->string = (char *)calloc(INITIALIZE_BUFFER_SIZE, sizeof(char));
     s->max_size = INITIALIZE_BUFFER_SIZE;
     s->count = 0;
 }
 
-//文字列保持用のメモリサイズを追加。追加部分はゼロフィルする。
+/*文字列保持用のメモリサイズを追加。追加部分はゼロフィルする。*/
 static void _add_more_size(STRING *s){
     s->string = (char *)realloc(s->string, s->max_size + ADD_BUFFER_SIZE);
     for(int i=0; i<ADD_BUFFER_SIZE; i++){
@@ -83,7 +83,7 @@ static void _add_more_size(STRING *s){
     s->max_size += ADD_BUFFER_SIZE;
 }
 
-//文字列保持用のメモリサイズが満タンなら1を、そうでなければ0を返す
+/*文字列保持用のメモリサイズが満タンなら1を、そうでなければ0を返す*/
 static int _is_max_size(STRING *s){
     if(s->max_size == s->count+1){//(null文字用サイズのためにs->count+1となる)
         return 1;
