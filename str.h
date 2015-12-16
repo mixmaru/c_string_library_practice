@@ -1,9 +1,6 @@
 #ifndef STR_H
 #define STR_H
 
-#define INITIALIZE_BUFFER_SIZE 10
-#define ADD_BUFFER_SIZE 10
-
 typedef struct{
     char *string;   //文字列ポインタ
     int max_size;   //文字列用確保メモリサイズ
