@@ -3,7 +3,6 @@
 
 typedef struct{
     char *string;   //文字列ポインタ
-    int max_size;   //文字列用確保メモリサイズ
     int count;      //文字数(null文字を含まない)
 } STRING;
 

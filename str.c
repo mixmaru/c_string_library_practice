@@ -4,13 +4,12 @@
 /*STRING構造体の初期化を行う*/
 static void str_init(STRING *s){
     s->string = (char *)calloc(1, sizeof(char));
-    s->max_size = 1;
     s->count = 0;
 }
 
 /*STRING構造体の文字列サイズを追加する*/
 static STRING * add_memsize(STRING * s, const int add_size){
-    s->string = (char *)realloc(s->string, s->max_size + add_size);
+    s->string = (char *)realloc(s->string, s->count + add_size + 1);
     return s;
 }
 
