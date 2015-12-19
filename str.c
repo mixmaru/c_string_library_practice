@@ -24,7 +24,9 @@ STRING *str_create(){
 
 /* 文字列をセット */
 void str_set(STRING *s, char * const str){
-    str_init(s);
+    if(s->count != 0){
+        str_init(s);
+    }
     str_add(s, str);
 }
 
