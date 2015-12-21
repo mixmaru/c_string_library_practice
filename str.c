@@ -24,7 +24,7 @@ STRING *str_create(){
 }
 
 /* 文字列をセット */
-void str_set(STRING *s, char * const str){
+void str_set(STRING *s, const char *str){
     if(s->count != 0){
         str_init(s);
     }
@@ -32,7 +32,7 @@ void str_set(STRING *s, char * const str){
 }
 
 /* 文字列追加 */
-void str_add(STRING *s, char * const str){
+void str_add(STRING *s, const char *str){
     //必要サイズを追加
     int add_size = 0;
     while(str[add_size]!='\0'){
@@ -47,7 +47,7 @@ void str_add(STRING *s, char * const str){
         s->count++;
     }
     //null文字を追加
-    s->string[start+i+1] = '\n';
+    s->string[start+i+1] = '\0';
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
