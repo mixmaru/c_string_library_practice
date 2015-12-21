@@ -16,13 +16,13 @@ void str_set(STRING *, const char *);
 void str_add(STRING *, const char *);
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
-STRING *str_extract(STRING *, const int, const int);
+STRING *str_extract(const STRING *, const int, const int);
 
 /* printfで出力できる文字列を返す */
-char *str_value(STRING *);
+char *str_value(const STRING *);
 
 /* 文字列の長さを返す */
-int str_length(STRING *);
+int str_length(const STRING *);
 
 /* リソース開放 */
 void str_destroy(STRING *);

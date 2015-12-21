@@ -52,7 +52,7 @@ void str_add(STRING *s, const char *str){
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
 /*  */
-STRING *str_extract(STRING * string, const int start, const int length){
+STRING *str_extract(const STRING *string, const int start, const int length){
     //start, lengthが負だとエラー
     if(start < 0 || length < 0){
         printf("str_extractに正しい引数を渡してください\n");
@@ -85,12 +85,12 @@ STRING *str_extract(STRING * string, const int start, const int length){
 }
 
 /* printfで出力できる文字列を返す */
-char *str_value(STRING *s){
+char *str_value(const STRING *s){
     return s->string;
 }
 
 /* 文字列の長さを返す */
-int str_length(STRING *s){
+int str_length(const STRING *s){
     return s->count;
 }
 
