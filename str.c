@@ -9,7 +9,7 @@ static void str_init(STRING *s){
 }
 
 /*STRING構造体の文字列サイズを追加する*/
-static STRING * add_memsize(STRING * s, const int add_size){
+static STRING * add_memsize(STRING *s, const int add_size){
     s->string = (char *)realloc(s->string, s->count + add_size + 1);
     return s;
 }
@@ -26,6 +26,7 @@ STRING *str_create(){
 /* 文字列をセット */
 void str_set(STRING *s, const char *str){
     if(s->count != 0){
+        free(s->string);
         str_init(s);
     }
     str_add(s, str);
