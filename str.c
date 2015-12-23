@@ -35,15 +35,15 @@ void str_set(STRING *s, const char *str){
 /* 文字列追加 */
 void str_add(STRING *s, const char *str){
     //必要サイズを追加
-    int add_size = 0;
-    while(str[add_size]!='\0'){
-        add_size++;
+    int str_count = 0;
+    while(str[str_count]!='\0'){
+        str_count++;
     }
-    s = add_memsize(s, add_size);
+    s = add_memsize(s, str_count);
 
     int start = s->count;   //文字列追加開始位置
     int i;
-    for(i=0; str[i]!='\0'; i++){
+    for(i=0; i<str_count; i++){
         s->string[start+i] = str[i];
         s->count++;
     }
