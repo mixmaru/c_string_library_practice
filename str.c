@@ -75,7 +75,7 @@ STRING *str_extract(const STRING *string, const int start, const int length){
     //stringが\0に達したらそこで終了
     int i=0;
     int j=start;      //i:コピー先文字列用カウンタ, j:コピー元文字列用カウンタ
-    while(string->string[i] != '\0' && i < length){
+    while(string->string[j] != '\0' && i < length){
         ret_string->string[i] = string->string[j];
         ret_string->count++;
         i++; j++;
