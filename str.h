@@ -1,10 +1,11 @@
 #ifndef STR_H
 #define STR_H
 
-typedef struct{
-    char *string;   //文字列ポインタ
-    int count;      //文字数(null文字を含まない)
-} STRING;
+//typedef struct{
+//    char *string;   //文字列ポインタ
+//    int count;      //文字数(null文字を含まない)
+//} STRING;
+#define STRING char
 
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(void);
