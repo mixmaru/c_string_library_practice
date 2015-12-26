@@ -1,7 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "str.h"
 
 STRING *str_create(void){
-    STRING *lib_string = 0;
+    STRING *lib_string = NULL;
+    lib_string = (STRING *)calloc(1, sizeof(STRING));
     return lib_string;
 }
 
