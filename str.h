@@ -7,7 +7,7 @@
 STRING *str_create(void);
 
 /* 初期文字列を設定 */
-int str_set(STRING *, const char *);
+int str_set(STRING **, const char *);
 
 /* 文字列を追記 */
 int str_add(STRING *, const char *);

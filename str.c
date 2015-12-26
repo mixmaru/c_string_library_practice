@@ -9,38 +9,25 @@ STRING *str_create(void){
 }
 
 //lib_stringはstr_create()での返り値を使うこと
-int str_set(STRING *lib_string, const char *string){
-    if(lib_string[0] != '\0'){
-        lib_string[0] = '\0';
+int str_set(STRING **lib_string, const char *string){
+    if(*lib_string[0] != '\0'){
+        *lib_string[0] = '\0';
     }
-    printf("%s\n", string);
 
     //セットする文字用に必要なサイズを追加する
     //セットする文字数をカウント
-    const char *count_work = string;
     int count = 0;
-    while(*count_work != '\0'){
-        count_work++;
+    while(string[count] != '\0'){
         count++;
     }
-    printf("%d\n", count);
     //文字数+1(null文字用)のサイズを確保
-    lib_string = (STRING *)realloc(lib_string, (sizeof(STRING)*count)+1);
+    *lib_string = (STRING *)realloc(*lib_string, (sizeof(STRING)*count)+1);
 
-    //文字をコピーする
-    const char *from_string = string;
-    STRING *to_string = lib_string;
-    while(*from_string != '\0'){
-        printf("address to %p, from %p\n", to_string, from_string);
-        *to_string = *from_string;
-        printf("str to %c, from %c\n", *to_string, *from_string);
-        from_string++;
-        to_string++;
+    //文字をコピーする。null文字まで含めてコピーする
+    int j = 0;
+    for(j=0; j<=count; j++){
+        (*lib_string)[j] = string[j];
     }
-    //最後にnull文字を追加
-    *to_string = '\0';
-    printf("str to %c, from %c\n", *to_string, *from_string);
-    printf("str to %s\n", lib_string);
     return 1;
 }
 
