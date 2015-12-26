@@ -7,10 +7,10 @@
 STRING *str_create(void);
 
 /* 初期文字列を設定 */
-void str_set(STRING *, const char *);
+int str_set(STRING *, const char *);
 
 /* 文字列を追記 */
-void str_add(STRING *, const char *);
+int str_add(STRING *, const char *);
 
 /* 文字列を切り出す */
 STRING *str_extract(STRING *, int, int);
