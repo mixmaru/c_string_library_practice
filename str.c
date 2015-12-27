@@ -1,10 +1,14 @@
+/* stdio.h 不要なら削除する */
+#include <stdio.h>
 #include <stdlib.h>
 #include "str.h"
 
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
-    STRING *s = NULL;
+    STRING *s = (STRING *)malloc(sizeof(STRING));
+    s->string = (char *)calloc(1, sizeof(char));
+    s->count = 0;
     return s;
 }
 
