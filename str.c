@@ -1,37 +1,34 @@
 #include <stdlib.h>
 #include "str.h"
 
-/*STRING構造体の文字列サイズを追加する*/
-static STRING * add_memsize(STRING *s, const int add_size){
-    return s;
-}
-
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
-    STRING *s;
+    STRING *s = NULL;
     return s;
 }
 
 /* 文字列をセット */
-void str_set(STRING *s, const char *str){
+int str_set(STRING *s, const char *str){
+    return 0;
 }
 
 /* 文字列追加 */
-void str_add(STRING *s, const char *str){
+int str_add(STRING *s, const char *str){
+    return 0;
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
 /*  */
 STRING *str_extract(const STRING *string, const int start, const int length){
     //start, lengthが負だとエラー
-    STRING *ret_string;
+    STRING *ret_string = NULL;
     return ret_string;
 }
 
 /* printfで出力できる文字列を返す */
 char *str_value(const STRING *s){
-    return s;
+    return "aaaaaaa";
 }
 
 /* 文字列の長さを返す */
