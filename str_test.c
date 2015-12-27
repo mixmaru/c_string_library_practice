@@ -40,12 +40,13 @@ static int str_set_test(void){
 
     //前処理
     int ret_val = 1;
-    STRING *s, *s2, *s3, *s4;
+    STRING *s, *s2, /**s3,*/ *s4, *s5;
     s = str_create();
     s2 = str_create();
-    s3 = NULL;
+//    s3 = NULL;
     s4 = str_create();
     str_set(s4, "abc");
+    s5 = str_create();
 
     //テスト1 通常
     str_set(s, "123");
@@ -66,13 +67,13 @@ static int str_set_test(void){
     }
 
     //テスト3 初期化されていない
-    if(str_set(s3, "123")){
-        //エラーが出ていないので、正しくない
-        printf("test_3 ng\n");
-        ret_val = 0;
-    }else{
-        printf("test_3 ok\n");
-    }
+//    if(str_set(s3, "123")){
+//        //エラーが出ていないので、正しくない
+//        printf("test_3 ng\n");
+//        ret_val = 0;
+//    }else{
+//        printf("test_3 ok\n");
+//    }
 
     //テスト4 すでに文字列が入っている
     str_set(s4, "123");
@@ -80,6 +81,15 @@ static int str_set_test(void){
         printf("test_4 ok\n");
     }else{
         printf("test_4 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト5 空文字をセット
+    str_set(s5, "");
+    if(strcmp(s5->string, "") == 0){
+        printf("test_5 ok\n");
+    }else{
+        printf("test_5 ng\n");
         ret_val = 0;
     }
 
