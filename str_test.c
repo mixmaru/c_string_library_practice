@@ -5,6 +5,7 @@
 
 static int str_create_test(void);
 static int str_set_test(void);
+static int str_add_test(void);
 
 int main(void){
 
@@ -13,6 +14,9 @@ int main(void){
 
     //str_setのテスト
     str_set_test();
+
+    //str_addのテスト
+    str_add_test();
 }
 
 static int str_create_test(void){
@@ -96,4 +100,66 @@ static int str_set_test(void){
     printf("******** str_set_test end ***********\n\n\n\n");
     return ret_val;
 
+}
+
+static int str_add_test(void){
+    printf("******** str_add_test start ***********\n");
+
+    //前処理
+    int ret_val = 1;
+    STRING *s1, *s2, *s3, *s4;
+    s1 = str_create();
+    str_set(s1, "abc");
+
+    s2 = str_create();
+
+    s3 = str_create();
+    str_set(s3, "abcdefghijklmnopqrstu");
+
+    s4 = str_create();
+    str_set(s4, "abc");
+
+    //テスト1 通常
+    str_add(s1, "123");
+    if(strcmp(s1->string, "abc123") == 0){
+        printf("test_1 ok\n");
+    }else{
+        printf("test_1 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト2 中身が空
+    str_add(s2, "123");
+    if(strcmp(s2->string, "123") == 0){
+        printf("test_2 ok\n");
+    }else{
+        printf("test_2 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト3 長い文字を追加
+    str_add(s3, "1234567891234567890123456789012345678901234567890");
+    if(strcmp(s3->string, "abcdefghijklmnopqrstu1234567891234567890123456789012345678901234567890") == 0){
+        printf("test_3 ok\n");
+    }else{
+        printf("test_3 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト4 繰り返し追加
+    str_add(s4, "123");
+    str_add(s4, "abc");
+    str_add(s4, "123");
+    str_add(s4, "abc");
+    str_add(s4, "123");
+    str_add(s4, "abc");
+    if(strcmp(s4->string, "abc123abc123abc123abc") == 0){
+        printf("test_4 ok\n");
+    }else{
+        printf("test_4 ng\n");
+        ret_val = 0;
+    }
+
+    printf("******** str_add_test end ***********\n\n\n\n");
+    return ret_val;
 }
