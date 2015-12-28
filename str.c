@@ -48,7 +48,7 @@ int str_add(STRING *lib_string, const char *string){
 /*  */
 STRING *str_extract(const STRING *lib_string, const int start, const int length){
     //start, lengthが負だとエラー
-    STRING *ret_string = NULL;
+    STRING *ret_string = str_create();
     return ret_string;
 }
 
