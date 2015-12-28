@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "str.h"
 
+static int str_copy(STRING *, const char *, int, int, int);
+
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
@@ -30,22 +32,14 @@ int str_add(STRING *lib_string, const char *string){
     while(string[string_count] != '\0'){
         string_count++;
     }
-    //サイズを追加する
-    lib_string->string = (char *)realloc(lib_string->string, (lib_string->count) + (sizeof(char)*string_count)+1);
-    //文字をコピーしていく
-    int from = 0;
-    int to   = lib_string->count;
-    while(from < string_count){
-        lib_string->string[to] = string[from];
-        lib_string->count++; from++; to++;
+    if(str_copy(lib_string, string, lib_string->count, 0, string_count)){
+        return 1;
+    }else{
+        return 0;
     }
-    //最後にnull文字を加える
-    lib_string->string[lib_string->count] = '\0';
-    return 1;
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
-/*  */
 STRING *str_extract(const STRING *lib_string, const int start, const int length){
     //begin位置、end位置を決定する
     int begin = 0;
@@ -64,23 +58,17 @@ STRING *str_extract(const STRING *lib_string, const int start, const int length)
     //返却用STRING構造体を用意する
     STRING *ret_string = str_create();
 
-    //begin位置が範囲外である場合と、end位置がbegin位置より手間だった場合は空文字のまま返す。
+    //begin位置が範囲外である場合と、end位置がbegin位置より手前だった場合は空文字のまま返す。
     if(begin > lib_string->count || begin > end){
         return ret_string;
     }else{
-        //そうでない場合は返却用STRING構造体に必要なサイズを追加する。
-        ret_string->string = (char *)realloc(ret_string->string, (lib_string->count) + (sizeof(char)*(end - begin + 1))+1);
-        //文字列をコピーする
-        int from = begin;
-        int to   = 0;
-        while(from <= end){
-            ret_string->string[to] = lib_string->string[from];
-            ret_string->count++; from++; to++;
+        //そうでない場合は文字列をコピーする。
+        if(str_copy(ret_string, lib_string->string, 0, begin, end - begin + 1)){
+            return ret_string;
+        }else{
+            printf("エラーが発生しました\n");
+            return ret_string;
         }
-        //最後にnull文字を加える
-        ret_string->string[to] = '\0';
-
-        return ret_string;
     }
 }
 
@@ -97,4 +85,42 @@ int str_length(const STRING *s){
 
 /* リソース開放 */
 void str_destroy(STRING *s){
+}
+
+/* stringのstring_start番目からlimitまでの文字を、targetのtarget_start番目以降へコピーする */
+/*
+target          コピー先STRING構造体
+string          コピー元文字列
+target_start    コピー先のコピー開始位置
+string_start    コピー元のコピー開始位置
+limit           コピー文字数
+*/
+static int str_copy(STRING *target, const char *string, int target_start, int string_start, int limit){
+    //target_startが存在している文字列(null文字を含む)外を指していればエラー
+    if(target_start > target->count){
+        return 0;
+    }
+    //string_startが存在している文字列(null文字を含まない)外を指していればエラー
+    int string_count = 0;
+    while(string[string_count] != '\0'){
+        string_count++;
+    }
+    if(string_start >= string_count){
+        return 0;
+    }
+    //limitがstringの範囲を超える場合は、最大値で収める
+    if(string_start + limit > string_count){
+        limit = string_count - string_start;
+    }
+
+    //サイズを追加する
+    target->string = (char *)realloc(target->string, (sizeof(char)*(target_start + limit +1)));
+    //文字をコピーしていく
+    for(int i=0; i<limit; i++){
+        target->string[target_start+i] = string[string_start+i];
+        target->count++;
+    }
+    //最後にnull文字を加える
+    target->string[target->count] = '\0';
+    return 1;
 }
