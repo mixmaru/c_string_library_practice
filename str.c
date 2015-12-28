@@ -73,18 +73,21 @@ STRING *str_extract(const STRING *lib_string, const int start, const int length)
 }
 
 /* printfで出力できる文字列を返す */
-char *str_value(const STRING *lib_strint){
-    return "aaaaaaa";
+char *str_value(const STRING *lib_string){
+    return lib_string->string;
 }
 
 /* 文字列の長さを返す */
-int str_length(const STRING *s){
-    int ret_num = 0;
-    return ret_num;
+int str_length(const STRING *lib_string){
+    return lib_string->count;
 }
 
 /* リソース開放 */
-void str_destroy(STRING *s){
+void str_destroy(STRING *lib_string){
+    free(lib_string->string);
+    lib_string->string = NULL;
+    free(lib_string);
+    lib_string = NULL;
 }
 
 /* stringのstring_start番目からlimitまでの文字を、targetのtarget_start番目以降へコピーする */
