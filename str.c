@@ -47,9 +47,41 @@ int str_add(STRING *lib_string, const char *string){
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
 /*  */
 STRING *str_extract(const STRING *lib_string, const int start, const int length){
-    //start, lengthが負だとエラー
+    //begin位置、end位置を決定する
+    int begin = 0;
+    int end   = 0;
+    if(start >= 0){
+        begin = start;
+    }else{
+        begin = lib_string->count + start;
+    }
+    if(length >= 0){
+        end = begin + length - 1;
+    }else{
+        end = lib_string->count + length - 1;
+    }
+
+    //返却用STRING構造体を用意する
     STRING *ret_string = str_create();
-    return ret_string;
+
+    //begin位置が範囲外である場合と、end位置がbegin位置より手間だった場合は空文字のまま返す。
+    if(begin > lib_string->count || begin > end){
+        return ret_string;
+    }else{
+        //そうでない場合は返却用STRING構造体に必要なサイズを追加する。
+        ret_string->string = (char *)realloc(ret_string->string, (lib_string->count) + (sizeof(char)*(end - begin + 1))+1);
+        //文字列をコピーする
+        int from = begin;
+        int to   = 0;
+        while(from <= end){
+            ret_string->string[to] = lib_string->string[from];
+            ret_string->count++; from++; to++;
+        }
+        //最後にnull文字を加える
+        ret_string->string[to] = '\0';
+
+        return ret_string;
+    }
 }
 
 /* printfで出力できる文字列を返す */
