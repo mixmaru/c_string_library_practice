@@ -7,6 +7,8 @@ static int str_create_test(void);
 static int str_set_test(void);
 static int str_add_test(void);
 static int str_extract_test(void);
+static int str_value_test(void);
+static int str_length_test(void);
 
 int main(void){
 
@@ -21,6 +23,12 @@ int main(void){
 
     //str_extractのテスト
     str_extract_test();
+
+    //str_valueのテスト
+    str_value_test();
+
+    //str_lengthのテスト
+    str_length_test();
 }
 
 static int str_create_test(void){
@@ -300,5 +308,78 @@ static int str_extract_test(void){
         ret_val = 0;
     }
     printf("******** str_extract_test end ***********\n\n\n\n");
+    return ret_val;
+}
+
+static int str_value_test(void){
+    printf("******** str_extract_test start ***********\n");
+    int ret_val = 1;
+
+    //テスト1 通常
+    STRING *lib_string;
+    lib_string = str_create();
+    str_set(lib_string, "abc");
+    if(strcmp(str_value(lib_string), "abc") == 0){
+        printf("test_1 ok\n");
+    }else{
+        printf("test_1 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト2 空文字
+    str_set(lib_string, "");
+    if(strcmp(str_value(lib_string), "") == 0){
+        printf("test_2 ok\n");
+    }else{
+        printf("test_2 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト3 長い文字
+    str_add(lib_string, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    if(strcmp(str_value(lib_string), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") == 0){
+        printf("test_3 ok\n");
+    }else{
+        printf("test_3 ng\n");
+        ret_val = 0;
+    }
+
+    printf("******** str_value_test end ***********\n\n\n\n");
+    return ret_val;
+}
+static int str_length_test(void){
+    printf("******** str_length_test start ***********\n");
+    int ret_val = 1;
+
+    //テスト1 通常
+    STRING *lib_string;
+    lib_string = str_create();
+    str_set(lib_string, "abc");
+    if(str_length(lib_string) == 3){
+        printf("test_1 ok\n");
+    }else{
+        printf("test_1 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト2 空文字
+    str_set(lib_string, "");
+    if(str_length(lib_string) == 0){
+        printf("test_2 ok\n");
+    }else{
+        printf("test_2 ng\n");
+        ret_val = 0;
+    }
+
+    //テスト3 長い文字
+    str_add(lib_string, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    if(str_length(lib_string) == strlen("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")){
+        printf("test_3 ok\n");
+    }else{
+        printf("test_3 ng\n");
+        ret_val = 0;
+    }
+
+    printf("******** str_length_test end ***********\n\n\n\n");
     return ret_val;
 }
