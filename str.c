@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "str.h"
 
-static int str_copy(STRING *, const char *, int, int, int);
 
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
@@ -98,7 +97,7 @@ target_start    コピー先のコピー開始位置
 string_start    コピー元のコピー開始位置
 limit           コピー文字数
 */
-static int str_copy(STRING *target, const char *string, int target_start, int string_start, int limit){
+int str_copy(STRING *target, const char *string, unsigned int target_start, unsigned int string_start, unsigned int limit){
     //target_startが存在している文字列(null文字を含む)外を指していればエラー
     if(target_start > target->count){
         return 0;

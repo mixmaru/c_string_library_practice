@@ -11,16 +11,69 @@ static int str_extract_test(void);
 int main(void){
 
     //str_create()のテスト
-    str_create_test();
+//    str_create_test();
+//
+//    //str_setのテスト
+//    str_set_test();
+//
+//    //str_addのテスト
+//    str_add_test();
+//
+//    //str_extractのテスト
+//    str_extract_test();
 
-    //str_setのテスト
-    str_set_test();
+    //str_copyのテスト
+    //テスト1
+    STRING *lib_string;
+    lib_string = str_create();
+    str_set(lib_string, "abcde");
+    if(str_copy(lib_string, "0123456", 2, 3, 3)){
+        if(strcmp(lib_string->string, "ab345") == 0){
+            printf("test1 ok\n");
+        }else{
+            printf("test1 ng\n");
+        }
+    }else{
+        printf("test1 ng\n");
+    }
+    str_destroy(lib_string);
 
-    //str_addのテスト
-    str_add_test();
+    //テスト2 target_startが外部を指す。
+    STRING *lib_string2;
+    lib_string2 = str_create();
+    str_set(lib_string2, "abcde");
+    if(str_copy(lib_string2, "0123456", 6, 1, 1)){
+        printf("test2 ng\n");
+    }else{
+        printf("test2 ok\n");
+    }
+    str_destroy(lib_string2);
 
-    //str_extractのテスト
-    str_extract_test();
+    //テスト3 string_startが外部を指す。
+    STRING *lib_string3;
+    lib_string3 = str_create();
+    str_set(lib_string3, "abcde");
+    if(str_copy(lib_string3, "0123456", 2, 7, 1)){
+        printf("test3 ng\n");
+    }else{
+        printf("test3 ok\n");
+    }
+    str_destroy(lib_string3);
+
+    //テスト4 limitが外部を指す。
+    STRING *lib_string4;
+    lib_string4 = str_create();
+    str_set(lib_string4, "abcde");
+    if(str_copy(lib_string4, "0123456", 2, 1, 100)){
+        if(strcmp(lib_string4->string, "ab123456") == 0){
+            printf("test4 ok\n");
+        }else{
+            printf("test4 ng\n");
+        }
+    }else{
+        printf("test4 ng\n");
+    }
+    str_destroy(lib_string4);
 }
 
 static int str_create_test(void){
