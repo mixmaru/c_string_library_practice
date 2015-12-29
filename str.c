@@ -21,8 +21,11 @@ int str_set(STRING *lib_string, const char *string){
         lib_string->string[0] = '\0';
         lib_string->count = 0;
     }
-    str_add(lib_string, string);
-    return 1;
+    if(str_add(lib_string, string)){
+        return 1;
+    }else{
+        return 0;
+    }
 }
 
 /* 文字列追加 */
