@@ -28,6 +28,4 @@ int str_length(const STRING *);
 /* リソース開放 */
 void str_destroy(STRING *);
 
-int str_copy(STRING *, const char *, unsigned int, unsigned int, unsigned int);
-
 #endif //STR_H
