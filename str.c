@@ -4,6 +4,7 @@
 #include "str.h"
 
 static int str_copy(STRING *, const char *, unsigned int, unsigned int, unsigned int);
+static int get_str_length(const char *);
 
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
@@ -31,10 +32,8 @@ int str_set(STRING *lib_string, const char *string){
 /* 文字列追加 */
 int str_add(STRING *lib_string, const char *string){
     //文字数をカウント
-    int string_count = 0;
-    while(string[string_count] != '\0'){
-        string_count++;
-    }
+    int string_count = get_str_length(string);
+
     if(str_copy(lib_string, string, lib_string->count, 0, string_count)){
         return 1;
     }else{
@@ -107,10 +106,7 @@ static int str_copy(STRING *target, const char *string, unsigned int target_star
         return 0;
     }
     //string_startが存在している文字列(null文字を含まない)外を指していればエラー
-    int string_count = 0;
-    while(string[string_count] != '\0'){
-        string_count++;
-    }
+    int string_count = get_str_length(string);
     if(string_start >= string_count){
         return 0;
     }
@@ -129,4 +125,13 @@ static int str_copy(STRING *target, const char *string, unsigned int target_star
     //最後にnull文字を加える
     target->string[target->count] = '\0';
     return 1;
+}
+
+/* 文字列のカウント */
+static int get_str_length(const char *string){
+    int count = 0;
+    while(string[count] != '\0'){
+        count++;
+    }
+    return count;
 }
