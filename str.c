@@ -3,74 +3,77 @@
 #include <stdlib.h>
 #include "str.h"
 
-static int str_copy(STRING *, const char *, unsigned int, unsigned int, unsigned int);
-static int get_str_length(const char *);
+static int str_add_detail(STRING *, const char *, unsigned int, unsigned int);
+static int count_str_length(const char *);
 
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
-    //STRING構造体一つのサイズをmallocで割り当てる。
-    STRING *s = (STRING *)malloc(sizeof(STRING));
-    s->string = (char *)calloc(1, sizeof(char));
-    s->count = 0;
-    return s;
+    STRING *lib_string = (STRING *)malloc(sizeof(STRING));
+    lib_string->string = (char *)calloc(1, sizeof(char));
+    lib_string->count = 0;
+    return lib_string;
 }
 
-/* 文字列をセット (初期化されていないSTRINGを渡すとSegmentation faultとなる) */
-int str_set(STRING *lib_string, const char *string){
+/*
+文字列をセット (初期化されていないSTRINGの空ポインタを渡すとSegmentation faultとなる)
+*/
+int str_set(STRING *lib_string, const char *set_string){
     //文字列が空でなければ空にする
     if(lib_string->string[0] != '\0'){
         lib_string->string[0] = '\0';
         lib_string->count = 0;
     }
-    if(str_add(lib_string, string)){
-        return 1;
-    }else{
-        return 0;
-    }
+
+    //追加
+    int success = str_add(lib_string, set_string);
+    return (success) ? 1 : 0;
 }
 
-/* 文字列追加 */
-int str_add(STRING *lib_string, const char *string){
-    //文字数をカウント
-    int string_count = get_str_length(string);
-
-    if(str_copy(lib_string, string, lib_string->count, 0, string_count)){
-        return 1;
-    }else{
-        return 0;
-    }
+/*
+文字列追加
+lib_string->stringのおしりに、add_stringを追加する
+*/
+int str_add(STRING *lib_string, const char *add_string){
+    int success = str_add_detail(lib_string, add_string, 0, count_str_length(add_string));
+    return (success) ? 1 : 0;
 }
 
-/* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
-STRING *str_extract(const STRING *lib_string, const int start, const int length){
-    //begin位置、end位置を決定する
-    int begin = 0;
-    int end   = 0;
-    if(start >= 0){
-        begin = start;
-    }else{
-        begin = lib_string->count + start;
-    }
-    if(length >= 0){
-        end = begin + length - 1;
-    }else{
-        end = lib_string->count + length - 1;
-    }
+/*
+STRING->stringから指定番目から指定数の文字を切り出した文字列を保持する新しいSTRING構造体を返す
 
-    //返却用STRING構造体を用意する
+例:
+STRING *string = str_create();
+str_set(string, "abcde");
+STRING *new_string = str_extract(string, 2,   10 );   この場合 new_string->string == "cde" となる
+STRING *new_string = str_extract(string, -2,  1  );   この場合 new_string->string == "e"   となる
+STRING *new_string = str_extract(string, 1,   -2 );   この場合 new_string->string == "bc"  となる
+STRING *new_string = str_extract(string, 3,   -4 );   この場合 new_string->string == ""    となる
+STRING *new_string = str_extract(string, 100, 1  );   この場合 new_string->string == ""    となる
+
+引数：
+target          STRING構造体
+start           コピー開始位置
+chars_num       コピー文字数
+*/
+STRING *str_extract(const STRING *lib_string, const int start, const int chars_num){
+
+    //start, chars_numから文字列コピーの開始位置startと、停止位置lastを決定する
+    int first = (start >= 0)     ? start                 : lib_string->count + start;
+    int last  = (chars_num >= 0) ? first * chars_num - 1 : lib_string->count + chars_num - 1;
+
     STRING *ret_string = str_create();
 
-    //begin位置が範囲外である場合と、end位置がbegin位置より手前だった場合は空文字のまま返す。
-    if(begin > lib_string->count || begin > end){
+    //first位置が範囲外である場合と、last位置がfirst位置より手前だった場合は空文字のまま返す。
+    if(first > lib_string->count || first > last){
+        return ret_string;
+    }
+
+    int success = str_add_detail(ret_string, lib_string->string, first, last-first+1);
+    if(success){
         return ret_string;
     }else{
-        //そうでない場合は文字列をコピーする。
-        if(str_copy(ret_string, lib_string->string, 0, begin, end - begin + 1)){
-            return ret_string;
-        }else{
-            printf("エラーが発生しました\n");
-            return ret_string;
-        }
+        printf("エラーが発生しました\n");
+        return ret_string;
     }
 }
 
@@ -92,34 +95,38 @@ void str_destroy(STRING *lib_string){
     lib_string = NULL;
 }
 
-/* stringのstring_start番目からlimitまでの文字を、targetのtarget_start番目以降へコピーする */
 /*
-target          コピー先STRING構造体
-string          コピー元文字列
-target_start    コピー先のコピー開始位置
-string_start    コピー元のコピー開始位置
-limit           コピー文字数
+STRING構造体の文字列へ、
+文字列の指定位置から指定の文字数を追加する。
+
+例：
+str_set(target, "abcde");
+str_add_detail(target, "012", 1, 10); この場合 target->string == "abede12" となる
+
+引数：
+target          STRING構造体
+string          文字列
+start           コピー開始位置
+chars_num       コピー文字数
 */
-static int str_copy(STRING *target, const char *string, unsigned int target_start, unsigned int string_start, unsigned int limit){
-    //target_startが存在している文字列(null文字を含む)外を指していればエラー
-    if(target_start > target->count){
+static int str_add_detail(STRING *target, const char *string, unsigned int start, unsigned int chars_num){
+    int string_count = count_str_length(string);
+
+    //string文字列のコピー開始位置が、string文字列外ならエラーとする
+    if(start >= string_count){
         return 0;
-    }
-    //string_startが存在している文字列(null文字を含まない)外を指していればエラー
-    int string_count = get_str_length(string);
-    if(string_start >= string_count){
-        return 0;
-    }
-    //limitがstringの範囲を超える場合は、最大値で収める
-    if(string_start + limit > string_count){
-        limit = string_count - string_start;
     }
 
-    //サイズを追加する
-    target->string = (char *)realloc(target->string, (sizeof(char)*(target_start + limit +1)));
-    //文字をコピーしていく
-    for(int i=0; i<limit; i++){
-        target->string[target_start+i] = string[string_start+i];
+    //コピー文字数にしたがって文字列をコピーするとき、string文字列の範囲を超えてしまう場合は、最大値で収めるようにする
+    if(start + chars_num > string_count){
+        chars_num = string_count - start;
+    }
+
+    //string文字列から指定範囲の文字をtarget->stringに追加していく
+    target->string = (char *)realloc(target->string, (sizeof(char)*(target->count + chars_num +1)));
+    int last_char_num = target->count;
+    for(int i=0; i<chars_num; i++){
+        target->string[last_char_num+i] = string[start+i];
         target->count++;
     }
     //最後にnull文字を加える
@@ -128,7 +135,7 @@ static int str_copy(STRING *target, const char *string, unsigned int target_star
 }
 
 /* 文字列のカウント */
-static int get_str_length(const char *string){
+static int count_str_length(const char *string){
     int count = 0;
     while(string[count] != '\0'){
         count++;
