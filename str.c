@@ -59,7 +59,7 @@ STRING *str_extract(const STRING *lib_string, const int start, const int chars_n
 
     //start, chars_numから文字列コピーの開始位置startと、停止位置lastを決定する
     int first = (start >= 0)     ? start                 : lib_string->count + start;
-    int last  = (chars_num >= 0) ? first * chars_num - 1 : lib_string->count + chars_num - 1;
+    int last  = (chars_num >= 0) ? first + chars_num - 1 : lib_string->count + chars_num - 1;
 
     STRING *ret_string = str_create();
 
