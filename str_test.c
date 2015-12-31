@@ -4,7 +4,7 @@
 
 
 static int str_create_test(void);
-static int str_set_test(void);
+static void str_set_test(int, const char *);
 static int str_add_test(void);
 static int str_extract_test(void);
 static int str_value_test(void);
@@ -16,7 +16,20 @@ int main(void){
     str_create_test();
 
     //str_setのテスト
-    str_set_test();
+    printf("******** str_set_test start ***********\n");
+    /* 通常 */    str_set_test(1, "abc");
+    /* 長い */    str_set_test(2, "123111111111111111111111111111111111111111111111111111");
+    /* 空文字 */   str_set_test(3, "");
+
+    /* すでに文字列がセットされている */
+    STRING *s4 = str_create();
+    str_set(s4, "123");
+    if(strcmp(s4->string, "123") == 0){
+        printf("test %d ok\n", 4);
+    }else{
+        printf("test %d ng\n", 4);
+    }
+    printf("******** str_set_test end ***********\n\n\n\n");
 
     //str_addのテスト
     str_add_test();
@@ -51,67 +64,14 @@ static int str_create_test(void){
     return ret_val;
 }
 
-static int str_set_test(void){
-    printf("******** str_set_test start ***********\n");
-
-    //前処理
-    int ret_val = 1;
-    STRING *s, *s2, /**s3,*/ *s4, *s5;
-    s = str_create();
-    s2 = str_create();
-//    s3 = NULL;
-    s4 = str_create();
-    str_set(s4, "abc");
-    s5 = str_create();
-
-    //テスト1 通常
-    str_set(s, "123");
-    if(strcmp(s->string, "123")==0){
-        printf("test_1 ok\n");
+static void str_set_test(int num, const char *string){
+    STRING *lib_string = str_create();
+    str_set(lib_string, string);
+    if(strcmp(lib_string->string, string)==0){
+        printf("test %d ok\n", num);
     }else{
-        printf("test_1 ng\n");
-        ret_val = 0;
+        printf("test %d ng\n", num);
     }
-
-    //テスト2 ものすごい長い
-    str_set(s2, "123111111111111111111111111111111111111111111111111111");
-    if(strcmp(s2->string, "123111111111111111111111111111111111111111111111111111")==0){
-        printf("test_2 ok\n");
-    }else{
-        printf("test_2 ng\n");
-        ret_val = 0;
-    }
-
-    //テスト3 初期化されていない
-//    if(str_set(s3, "123")){
-//        //エラーが出ていないので、正しくない
-//        printf("test_3 ng\n");
-//        ret_val = 0;
-//    }else{
-//        printf("test_3 ok\n");
-//    }
-
-    //テスト4 すでに文字列が入っている
-    str_set(s4, "123");
-    if(strcmp(s4->string, "123") == 0){
-        printf("test_4 ok\n");
-    }else{
-        printf("test_4 ng\n");
-        ret_val = 0;
-    }
-
-    //テスト5 空文字をセット
-    str_set(s5, "");
-    if(strcmp(s5->string, "") == 0){
-        printf("test_5 ok\n");
-    }else{
-        printf("test_5 ng\n");
-        ret_val = 0;
-    }
-
-    printf("******** str_set_test end ***********\n\n\n\n");
-    return ret_val;
-
 }
 
 static int str_add_test(void){
