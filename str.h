@@ -1,5 +1,7 @@
 #ifndef STR_H
 #define STR_H
+#define STR_LIB_ERROR 0
+#define STR_LIB_SUCCESS 1
 
 typedef struct{
     char *string;   //文字列ポインタ

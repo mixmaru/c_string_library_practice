@@ -25,8 +25,8 @@ int str_set(STRING *lib_string, const char *set_string){
     }
 
     //追加
-    int success = str_add(lib_string, set_string);
-    return (success) ? 1 : 0;
+    int success_flag = str_add(lib_string, set_string);
+    return success_flag;
 }
 
 /*
@@ -34,12 +34,13 @@ int str_set(STRING *lib_string, const char *set_string){
 lib_string->stringのおしりに、add_stringを追加する
 */
 int str_add(STRING *lib_string, const char *add_string){
-    int success = str_add_detail(lib_string, add_string, 0, count_str_length(add_string));
-    return (success) ? 1 : 0;
+    int success_flag = str_add_detail(lib_string, add_string, 0, count_str_length(add_string));
+    return success_flag;
 }
 
 /*
 STRING->stringから指定番目から指定数の文字を切り出した文字列を保持する新しいSTRING構造体を返す
+エラー時はSTRING->stringにNULLポインタをセットする
 
 例:
 STRING *string = str_create();
@@ -63,16 +64,17 @@ STRING *str_extract(const STRING *lib_string, const int start, const int chars_n
 
     STRING *ret_string = str_create();
 
-    //first位置が範囲外である場合と、last位置がfirst位置より手前だった場合は空文字のまま返す。
+    //first位置が範囲外である場合と、last位置がfirst位置より手前だった場合は、NULLポインタをセットして返す
     if(first > lib_string->count || first > last){
+        ret_string->string = NULL;
         return ret_string;
     }
 
     int success = str_add_detail(ret_string, lib_string->string, first, last-first+1);
-    if(success){
+    if(success == STR_LIB_SUCCESS){
         return ret_string;
     }else{
-        printf("エラーが発生しました\n");
+        ret_string->string = NULL;
         return ret_string;
     }
 }
@@ -114,7 +116,7 @@ static int str_add_detail(STRING *target, const char *string, unsigned int start
 
     //string文字列のコピー開始位置が、string文字列外ならエラーとする
     if(start >= string_count){
-        return 0;
+        return STR_LIB_ERROR;
     }
 
     //コピー文字数にしたがって文字列をコピーするとき、string文字列の範囲を超えてしまう場合は、最大値で収めるようにする
@@ -131,7 +133,7 @@ static int str_add_detail(STRING *target, const char *string, unsigned int start
     }
     //最後にnull文字を加える
     target->string[target->count] = '\0';
-    return 1;
+    return STR_LIB_SUCCESS;
 }
 
 /* 文字列のカウント */

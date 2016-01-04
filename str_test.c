@@ -196,9 +196,9 @@ static int str_extract_test(void){
         ret_val = 0;
     }
 
-    //テスト2 startが範囲外を指定(空文字を返す)
+    //テスト2 startが範囲外を指定(エラー。NULLポインタが入る)
     s2_2 = str_extract(s2_1, 100, 3);
-    if(strcmp(s2_2->string, "") == 0){
+    if(s2_2->string == NULL){
         printf("test_2 ok\n");
     }else{
         printf("test_2 ng\n");
@@ -232,9 +232,9 @@ static int str_extract_test(void){
         ret_val = 0;
     }
 
-    //テスト6 lengthが負の数でstartの位置よりも手前になった場合(空文字を返す)
+    //テスト6 lengthが負の数でstartの位置よりも手前になった場合(エラー。NULLポインタが入る)
     s6_2 = str_extract(s6_1, 5, -5);
-    if(strcmp(s6_2->string, "") == 0){
+    if(s6_2->string == NULL){
         printf("test_6 ok\n");
     }else{
         printf("test_6 ng\n");
