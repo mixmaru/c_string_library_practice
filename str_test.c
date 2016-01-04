@@ -24,7 +24,8 @@ int main(void){
     /* すでに文字列がセットされている */
     STRING *s4 = str_create();
     str_set(s4, "123");
-    if(strcmp(s4->string, "123") == 0){
+    str_set(s4, "abc");
+    if(strcmp(s4->string, "abc") == 0){
         printf("test %d ok\n", 4);
     }else{
         printf("test %d ng\n", 4);
