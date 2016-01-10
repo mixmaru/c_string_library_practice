@@ -44,22 +44,22 @@ void str_set(STRING *lib_string, const char * str){
 }
 
 /* 文字列追加 */
-void str_add(STRING *s, const char * str){
-    //必要サイズを追加
+void str_add(STRING *lib_string, const char * str){
+    //必要なメモリサイズを追加
     int add_size = 0;
     while(str[add_size]!='\0'){
         add_size++;
     }
-    s = add_memsize(s, add_size);
+    lib_string = add_memsize(lib_string, add_size);
 
-    int start = s->count;   //文字列追加開始位置
-    int i;
-    for(i=0; str[i]!='\0'; i++){
-        s->string[start+i] = str[i];
-        s->count++;
+    //文字列追加処理
+    int start = lib_string->count;
+    for(int i=0; str[i]!='\0'; i++){
+        lib_string->string[start+i] = str[i];
+        lib_string->count++;
     }
     //null文字を追加
-    s->string[start+i+1] = '\n';
+    lib_string->string[lib_string->count] = '\0';
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
