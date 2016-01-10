@@ -11,6 +11,7 @@ static void str_init(STRING *s){
 /*STRING構造体の文字列サイズを追加する*/
 static STRING * add_memsize(STRING * s, const int add_size){
     s->string = (char *)realloc(s->string, s->max_size + add_size);
+    s->max_size += add_size;
     return s;
 }
 
