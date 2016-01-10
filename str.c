@@ -24,13 +24,13 @@ STRING *str_create(){
 }
 
 /* 文字列をセット */
-void str_set(STRING *s, char * const str){
+void str_set(STRING *s, const char * str){
     str_init(s);
     str_add(s, str);
 }
 
 /* 文字列追加 */
-void str_add(STRING *s, char * const str){
+void str_add(STRING *s, const char * str){
     //必要サイズを追加
     int add_size = 0;
     while(str[add_size]!='\0'){
