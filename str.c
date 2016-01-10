@@ -50,20 +50,25 @@ void str_add(STRING *s, const char * str){
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
-STRING *str_extract(STRING * s1, const int num1, const int num2){
-    STRING *s2;
-    s2 = str_create();
-    //num2分のサイズを用意する。
-    s2 = add_memsize(s2, num2);
+STRING *str_extract(STRING * lib_string, const int start, const int chars_num){
+    //start, chars_numから文字列コピーの開始位置startと、停止位置lastを決定する
+    int first = (start >= 0)     ? start                 : lib_string->count + start;
+    int last  = (chars_num >= 0) ? first + chars_num - 1 : lib_string->count + chars_num - 1;
 
-    int i,j;      //i:コピー先文字列用カウンタ, j:コピー元文字列用カウンタ
-    for(i=0, j=num1; i<num2; i++,j++){
-        s2->string[i] = s1->string[j];
-        s2->count++;
+    //返却用構造体の用意
+    STRING *ret_string;
+    ret_string = str_create();
+    //必要分のサイズを用意する。
+    ret_string = add_memsize(ret_string, last - first + 1);
+
+    //lib_stringのfirst文字目からlast文字までをret_stringにコピーしていく
+    for(int i=0; first+i<=last; i++){
+        ret_string->string[i] = lib_string->string[first+i];
+        ret_string->count++;
     }
-    //null文字の追加
-    s2->string[i+1] = '\0';
-    return s2;
+    //最後にnull文字を加える
+    ret_string->string[ret_string->count] = '\0';
+    return ret_string;
 }
 
 /* printfで出力できる文字列を返す */
