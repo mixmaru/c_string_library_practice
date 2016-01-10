@@ -2,10 +2,18 @@
 #include "str.h"
 
 /*STRING構造体の初期化を行う*/
-static void str_init(STRING *s){
-    s->string = (char *)calloc(1, sizeof(char));
-    s->max_size = 1;
-    s->count = 0;
+static void str_init(STRING *lib_string){
+    //lib_string->stringが動的確保されていれば、freeする
+    if(lib_string->string != NULL){
+        free(lib_string->string);
+        lib_string->string = NULL;
+    }
+
+    //lib_string->stringポインタを初期化し、空文字をセット。他のプロパティも初期化
+    lib_string->string = (char *)malloc(sizeof(char));
+    lib_string->string[0] = '\0';
+    lib_string->max_size = 1;
+    lib_string->count = 0;
 }
 
 /*STRING構造体の文字列サイズを追加する*/
@@ -18,16 +26,21 @@ static STRING * add_memsize(STRING * s, const int add_size){
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
-    STRING *s;
-    s = (STRING *)malloc(sizeof(STRING));
-    str_init(s);
-    return s;
+    STRING *lib_string;
+    lib_string = (STRING *)malloc(sizeof(STRING));
+    //未定義ポインタにNULLを指定しておく
+    lib_string->string = NULL;
+    str_init(lib_string);
+    return lib_string;
 }
 
 /* 文字列をセット */
-void str_set(STRING *s, const char * str){
-    str_init(s);
-    str_add(s, str);
+void str_set(STRING *lib_string, const char * str){
+    //すでに文字が入っていれば、文字列・確保サイズを初期化
+    if(lib_string->count != 0){
+        str_init(lib_string);
+    }
+    str_add(lib_string, str);
 }
 
 /* 文字列追加 */
