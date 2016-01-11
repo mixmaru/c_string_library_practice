@@ -3,7 +3,7 @@
 
 /*STRING構造体の初期化を行う*/
 static void str_init(STRING *lib_string){
-    //lib_string->stringが動的確保されていれば、freeする
+    //lib_string->stringがNULLポインタでなければ(動的確保されていれば)freeする
     if(lib_string->string != NULL){
         free(lib_string->string);
         lib_string->string = NULL;
@@ -26,16 +26,16 @@ static STRING * add_memsize(STRING * s, const int add_size){
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
-    STRING *lib_string;
-    lib_string = (STRING *)malloc(sizeof(STRING));
+    STRING *lib_string = (STRING *)malloc(sizeof(STRING));
     //未定義ポインタにNULLを指定しておく
     lib_string->string = NULL;
+    //文字列と関連プロパティ値を初期化
     str_init(lib_string);
     return lib_string;
 }
 
 /* 文字列をセット */
-void str_set(STRING *lib_string, const char * str){
+void str_set(STRING *lib_string, const char *str){
     //すでに文字が入っていれば、文字列・確保サイズを初期化
     if(lib_string->count != 0){
         str_init(lib_string);
@@ -44,13 +44,13 @@ void str_set(STRING *lib_string, const char * str){
 }
 
 /* 文字列追加 */
-void str_add(STRING *lib_string, const char * str){
-    //必要なメモリサイズを追加
-    int add_size = 0;
-    while(str[add_size]!='\0'){
-        add_size++;
+void str_add(STRING *lib_string, const char *str){
+    //文字数をカウント
+    int str_count = 0;
+    while(str[str_count]!='\0'){
+        str_count++;
     }
-    lib_string = add_memsize(lib_string, add_size);
+    lib_string = add_memsize(lib_string, str_count);
 
     //文字列追加処理
     int start = lib_string->count;
@@ -69,8 +69,7 @@ STRING *str_extract(STRING * lib_string, const int start, const int chars_num){
     int last  = (chars_num >= 0) ? first + chars_num - 1 : lib_string->count + chars_num - 1;
 
     //返却用構造体の用意
-    STRING *ret_string;
-    ret_string = str_create();
+    STRING *ret_string = str_create();
     //必要分のサイズを用意する。
     ret_string = add_memsize(ret_string, last - first + 1);
 
@@ -85,17 +84,19 @@ STRING *str_extract(STRING * lib_string, const int start, const int chars_num){
 }
 
 /* printfで出力できる文字列を返す */
-char *str_value(STRING *s){
-    return s->string;
+char *str_value(STRING *lib_string){
+    return lib_string->string;
 }
 
 /* 文字列の長さを返す */
-int str_length(STRING *s){
-    return s->count;
+int str_length(STRING *lib_string){
+    return lib_string->count;
 }
 
 /* リソース開放 */
-void str_destroy(STRING *s){
-    free(s->string);
-    free(s);
+void str_destroy(STRING *lib_string){
+    free(lib_string->string);
+    lib_string->string = NULL;
+    free(lib_string);
+    lib_string = NULL;
 }
