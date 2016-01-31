@@ -2,9 +2,9 @@
 #define STR_H
 
 typedef struct{
-    char *string;   //文字列ポインタ
-    int max_size;   //文字列用確保メモリサイズ
-    int count;      //文字数(null文字を含まない)
+    char *string;       //文字列ポインタ
+    int max_char_num;   //保持できる最大文字数(null文字を含まない)
+    int char_num;       //現在保持している文字数(null文字を含まない)
 } STRING;
 
 /* リソース確保＆初期化（中身を空文字列にする） */

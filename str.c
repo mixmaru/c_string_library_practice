@@ -1,17 +1,17 @@
 #include <stdlib.h>
 #include "str.h"
 
-/*STRING構造体の初期化を行う*/
+/*STRING構造体の初期化を行う。最初から10文字(+null文字)のサイズを用意する*/
 static void str_init(STRING *s){
     s->string = (char *)calloc(1, sizeof(char));
-    s->max_size = 1;
-    s->count = 0;
+    s->max_char_num = 1;
+    s->char_num = 0;
 }
 
 /*STRING構造体の文字列サイズを追加する*/
 static STRING * add_memsize(STRING * s, const int add_size){
-    s->string = (char *)realloc(s->string, s->max_size + add_size);
-    s->max_size += add_size;
+    s->string = (char *)realloc(s->string, s->max_char_num + add_size);
+    s->max_char_num += add_size;
     return s;
 }
 
@@ -43,12 +43,12 @@ void str_add(STRING *lib_string, const char * str){
 
     //それぞれの文字列の走査用ポインタを用意
     tmp_str = str;                                                      //strの走査用ポインタ
-    char *tmp_lib_string = lib_string->string + lib_string->count;      //s->stringの走査用ポインタの用意 + 初期位置の設定
+    char *tmp_lib_string = lib_string->string + lib_string->char_num;      //s->stringの走査用ポインタの用意 + 初期位置の設定
 
     //1文字ずつコピー
     while(*tmp_str != '\0'){
         *tmp_lib_string = *tmp_str;
-        lib_string->count++;
+        lib_string->char_num++;
         tmp_lib_string++;
         tmp_str++;
     }
@@ -59,8 +59,8 @@ void str_add(STRING *lib_string, const char * str){
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
 STRING *str_extract(STRING * lib_string, const int start, const int chars_num){
     //start, chars_numから文字列コピーの開始位置firstと、コピー文字数copy_numを決定する
-    int first       = (start >= 0)     ? start      : lib_string->count + start;
-    int copy_num    = (chars_num >= 0) ? chars_num  : (lib_string->count+chars_num)-first+1;
+    int first       = (start >= 0)     ? start      : lib_string->char_num + start;
+    int copy_num    = (chars_num >= 0) ? chars_num  : (lib_string->char_num+chars_num)-first+1;
 
     //返却用構造体の用意
     STRING *ret_string;
@@ -89,7 +89,7 @@ char *str_value(STRING *s){
 
 /* 文字列の長さを返す */
 int str_length(STRING *s){
-    return s->count;
+    return s->char_num;
 }
 
 /* リソース開放 */
