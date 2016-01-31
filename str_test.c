@@ -225,7 +225,7 @@ static int str_extract_test(void){
 
     //テスト5 lengthが負の数(最後の文字から指定の数の文字が省略される)
     s5_2 = str_extract(s5_1, 2, -2);
-    if(strcmp(s5_2->string, "cde") == 0){
+    if(strcmp(s5_2->string, "cdef") == 0){
         printf("test_5 ok\n");
     }else{
         printf("test_5 ng\n");
@@ -262,7 +262,7 @@ static int str_extract_test(void){
 
     //テスト9 start lengthがどちらも負で、start指定位置の文字のみ取得できる場合
     s9_2 = str_extract(s9_1, -2, -1);
-    if(strcmp(s9_2->string, "f") == 0){
+    if(strcmp(s9_2->string, "fg") == 0){
         printf("test_9 ok\n");
     }else{
         printf("test_9 ng\n");
