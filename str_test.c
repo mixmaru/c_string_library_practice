@@ -54,7 +54,7 @@ static int str_create_test(void){
 
     //テスト1
     s1 = str_create();
-    if(sizeof(*s1) == sizeof(STRING) && s1->string[0] == '\0' && s1->count == 0){
+    if(sizeof(*s1) == sizeof(STRING) && s1->string[0] == '\0' && s1->char_num == 0){
         printf("test_1 ok\n");
     }else{
         printf("test_1 ng\n");
@@ -273,7 +273,7 @@ static int str_extract_test(void){
 }
 
 static int str_value_test(void){
-    printf("******** str_extract_test start ***********\n");
+    printf("******** str_value_test start ***********\n");
     int ret_val = 1;
 
     //テスト1 通常
