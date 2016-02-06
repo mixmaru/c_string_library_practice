@@ -89,6 +89,7 @@ STRING *str_extract(STRING * lib_string, const int start, const int chars_num){
     //lib_stringのfirst文字目からlast文字までをret_stringにコピーしていく
     for(int i=0; i<copy_num; i++){
         *tmp_ret_string = *tmp_lib_string;
+        ret_string->char_num++;
         tmp_ret_string++;
         tmp_lib_string++;
     }
