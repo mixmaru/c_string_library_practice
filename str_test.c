@@ -157,15 +157,15 @@ static int str_extract_test(void){
 //    s3_1 = str_create();
 //    str_set(s3_1, "abcdefg");
 
-    STRING *s4_1 = NULL;
-    STRING *s4_2 = NULL;
-    s4_1 = str_create();
-    str_set(s4_1, "abcdefg");
+//    STRING *s4_1 = NULL;
+//    STRING *s4_2 = NULL;
+//    s4_1 = str_create();
+//    str_set(s4_1, "abcdefg");
 
-    STRING *s5_1 = NULL;
-    STRING *s5_2 = NULL;
-    s5_1 = str_create();
-    str_set(s5_1, "abcdefg");
+//    STRING *s5_1 = NULL;
+//    STRING *s5_2 = NULL;
+//    s5_1 = str_create();
+//    str_set(s5_1, "abcdefg");
 
 //    STRING *s6_1 = NULL;
 //    STRING *s6_2 = NULL;
@@ -182,10 +182,10 @@ static int str_extract_test(void){
     s8_1 = str_create();
     str_set(s8_1, "abcdefg");
 
-    STRING *s9_1 = NULL;
-    STRING *s9_2 = NULL;
-    s9_1 = str_create();
-    str_set(s9_1, "abcdefg");
+//    STRING *s9_1 = NULL;
+//    STRING *s9_2 = NULL;
+//    s9_1 = str_create();
+//    str_set(s9_1, "abcdefg");
 
     //テスト1 通常
     s1_2 = str_extract(s1_1, 2, 3);
@@ -215,22 +215,22 @@ static int str_extract_test(void){
 //    }
 
     //テスト4 startが負の数(最後から数えて指定番目の文字をstartとする)
-    s4_2 = str_extract(s4_1, -5, 2);
-    if(strcmp(s4_2->string, "cd") == 0){
-        printf("test_4 ok\n");
-    }else{
-        printf("test_4 ng\n");
-        ret_val = 0;
-    }
+//    s4_2 = str_extract(s4_1, -5, 2);
+//    if(strcmp(s4_2->string, "cd") == 0){
+//        printf("test_4 ok\n");
+//    }else{
+//        printf("test_4 ng\n");
+//        ret_val = 0;
+//    }
 
     //テスト5 lengthが負の数(最後の文字から指定の数の文字が省略される)
-    s5_2 = str_extract(s5_1, 2, -2);
-    if(strcmp(s5_2->string, "cdef") == 0){
-        printf("test_5 ok\n");
-    }else{
-        printf("test_5 ng\n");
-        ret_val = 0;
-    }
+//    s5_2 = str_extract(s5_1, 2, -2);
+//    if(strcmp(s5_2->string, "cdef") == 0){
+//        printf("test_5 ok\n");
+//    }else{
+//        printf("test_5 ng\n");
+//        ret_val = 0;
+//    }
 
     //テスト6 lengthが負の数でstartの位置よりも手前になった場合(エラー。NULLポインタが入る)
 //    s6_2 = str_extract(s6_1, 5, -5);
@@ -261,13 +261,13 @@ static int str_extract_test(void){
     }
 
     //テスト9 start lengthがどちらも負で、start指定位置の文字のみ取得できる場合
-    s9_2 = str_extract(s9_1, -2, -1);
-    if(strcmp(s9_2->string, "fg") == 0){
-        printf("test_9 ok\n");
-    }else{
-        printf("test_9 ng\n");
-        ret_val = 0;
-    }
+//    s9_2 = str_extract(s9_1, -2, -1);
+//    if(strcmp(s9_2->string, "fg") == 0){
+//        printf("test_9 ok\n");
+//    }else{
+//        printf("test_9 ng\n");
+//        ret_val = 0;
+//    }
     printf("******** str_extract_test end ***********\n\n\n\n");
     return ret_val;
 }

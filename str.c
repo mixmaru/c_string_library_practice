@@ -62,32 +62,22 @@ void str_add(STRING *lib_string, const char * str){
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
-STRING *str_extract(STRING * lib_string, const int start, const int chars_num){
-    //start, chars_numから文字列コピーの開始位置firstと、コピー文字数copy_numを決定する
-    int first = (start >= 0)     ? start      : lib_string->char_num + start;
-    int copy_num = 0;
-    if(chars_num >= 0){
-        int can_copy_max_num = lib_string->char_num - first;
-        copy_num = (chars_num >= can_copy_max_num) ? can_copy_max_num : chars_num;
-    }else{
-        copy_num = (lib_string->char_num+chars_num)-first+1;
-    }
-
+STRING *str_extract(STRING * lib_string, const unsigned int start, const unsigned int chars_num){
     //返却用構造体の用意
     STRING *ret_string;
     ret_string = str_create();
 
     //メモリサイズが足りるか判定
     //足りなければ、新たにメモリサイズを確保する
-    if(ret_string->max_char_num < copy_num){
-        ret_string = add_memsize(ret_string, copy_num);
+    if(ret_string->max_char_num < chars_num){
+        ret_string = add_memsize(ret_string, chars_num);
     }
 
     //それぞれの文字列の走査用ポインタを用意。tmp_lib_stringは開始位置をセット
     char *tmp_ret_string = ret_string->string;
-    char *tmp_lib_string = lib_string->string + first;
-    //lib_stringのfirst文字目からlast文字までをret_stringにコピーしていく
-    for(int i=0; i<copy_num; i++){
+    char *tmp_lib_string = lib_string->string + start;
+    //lib_stringのstart文字目からlast文字までをret_stringにコピーしていく
+    for(int i=0; i<chars_num; i++){
         *tmp_ret_string = *tmp_lib_string;
         ret_string->char_num++;
         tmp_ret_string++;
