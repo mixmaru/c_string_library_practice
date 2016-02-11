@@ -10,10 +10,9 @@ static void str_init(STRING *lib_string){
 }
 
 /*STRING構造体の文字列サイズを追加する。（必要になる文字数の倍の文字数を保持できるようにメモリを確保する）*/
-static STRING * add_memsize(STRING *lib_string, const int new_need_char_num){
+static void add_memsize(STRING *lib_string, const int new_need_char_num){
     lib_string->max_char_num = (lib_string->char_num + new_need_char_num) * 2;
     lib_string->string = (char *)realloc(lib_string->string, lib_string->max_char_num + 1);
-    return lib_string;
 }
 
 //文字列ポインタを渡して、文字数をカウントして返す
@@ -49,7 +48,7 @@ void str_add(STRING *lib_string, const char * str){
     //メモリサイズが足りるか判定
     //足りなければ、新たにメモリサイズを確保する
     if(lib_string->max_char_num < lib_string->char_num + str_num){
-        lib_string = add_memsize(lib_string, str_num);
+        add_memsize(lib_string, str_num);
     }
 
     //それぞれの文字列の走査用ポインタを用意
@@ -76,7 +75,7 @@ STRING *str_extract(STRING * lib_string, const unsigned int start, const unsigne
     //メモリサイズが足りるか判定
     //足りなければ、新たにメモリサイズを確保する
     if(ret_string->max_char_num < chars_num){
-        ret_string = add_memsize(ret_string, chars_num);
+        add_memsize(ret_string, chars_num);
     }
 
     //それぞれの文字列の走査用ポインタを用意。tmp_lib_stringは開始位置をセット
