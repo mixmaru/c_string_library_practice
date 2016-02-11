@@ -16,6 +16,17 @@ static STRING * add_memsize(STRING *lib_string, const int new_need_char_num){
     return lib_string;
 }
 
+//文字列ポインタを渡して、文字数をカウントして返す
+static int get_str_length(char const *string){
+    int str_num = 0;
+    char const *tmp_str = string;          //strの走査用ポインタ
+    while(*tmp_str != '\0'){
+        str_num++;
+        tmp_str++;
+    }
+    return str_num;
+}
+
 /* リソース確保＆初期化（中身を空文字列にする） */
 STRING *str_create(){
     //STRING構造体一つのサイズをmallocで割り当てる。
@@ -33,13 +44,8 @@ void str_set(STRING *s, const char * str){
 
 /* 文字列追加 */
 void str_add(STRING *lib_string, const char * str){
-    //strの文字数をカウント
-    int str_num = 0;
-    char const *tmp_str = str;          //strの走査用ポインタ
-    while(*tmp_str != '\0'){
-        str_num++;
-        tmp_str++;
-    }
+    int str_num = get_str_length(str);
+
     //メモリサイズが足りるか判定
     //足りなければ、新たにメモリサイズを確保する
     if(lib_string->max_char_num < lib_string->char_num + str_num){
@@ -47,7 +53,7 @@ void str_add(STRING *lib_string, const char * str){
     }
 
     //それぞれの文字列の走査用ポインタを用意
-    tmp_str = str;                                                      //strの走査用ポインタ
+    char const *tmp_str = str;                                                      //strの走査用ポインタ
     char *tmp_lib_string = lib_string->string + lib_string->char_num;      //s->stringの走査用ポインタの用意 + 初期位置の設定
 
     //1文字ずつコピー
