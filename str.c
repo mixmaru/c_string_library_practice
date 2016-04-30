@@ -19,7 +19,7 @@ static void add_memsize(STRING *lib_string, const int new_need_char_num){
 static int get_str_length(char const *string){
     int str_num = 0;
     char const *tmp_str = string;          //strの走査用ポインタ
-    while(*tmp_str != '\0'){
+    while(*tmp_str){
         str_num++;
         tmp_str++;
     }
@@ -56,7 +56,7 @@ void str_add(STRING *lib_string, const char * str){
     char *tmp_lib_string = lib_string->string + lib_string->char_num;      //s->stringの走査用ポインタの用意 + 初期位置の設定
 
     //1文字ずつコピー
-    while(*tmp_str != '\0'){
+    while(*tmp_str){
         *tmp_lib_string = *tmp_str;
         lib_string->char_num++;
         tmp_lib_string++;
