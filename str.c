@@ -56,14 +56,14 @@ void str_add(STRING *lib_string, const char * str){
     char *tmp_lib_string = lib_string->string + lib_string->char_num;      //s->stringの走査用ポインタの用意 + 初期位置の設定
 
     //1文字ずつコピー
-    while(*tmp_str){
-        *tmp_lib_string = *tmp_str;
-        lib_string->char_num++;
-        tmp_lib_string++;
-        tmp_str++;
+    int i = 0;
+    for(; *(tmp_str + i) != '\0'; i++){
+        *(tmp_lib_string + i) = *(tmp_str + i);
     }
+    //文字数を更新
+    lib_string->char_num = lib_string->char_num + i;
     //最後にnull文字を追加
-    *tmp_lib_string = '\0';
+    *(tmp_lib_string + i) = '\0';
 }
 
 /* （第二引数）文字目から（第三引数）文字取り出した新しい文字列を返す */
@@ -82,14 +82,14 @@ STRING *str_extract(STRING * lib_string, const unsigned int start, const unsigne
     char *tmp_ret_string = ret_string->string;
     char *tmp_lib_string = lib_string->string + start;
     //lib_stringのstart文字目からlast文字までをret_stringにコピーしていく
-    for(int i=0; i<chars_num; i++){
-        *tmp_ret_string = *tmp_lib_string;
-        ret_string->char_num++;
-        tmp_ret_string++;
-        tmp_lib_string++;
+    int i = 0;
+    for(; i<chars_num; i++){
+        *(tmp_ret_string + i) = *(tmp_lib_string + i);
     }
+    //文字数を更新する
+    ret_string->char_num = ret_string->char_num + i;
     //最後にnull文字を加える
-    *tmp_ret_string = '\0';
+    *(tmp_ret_string + i) = '\0';
     return ret_string;
 }
 
