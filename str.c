@@ -55,13 +55,10 @@ void str_add(STRING *lib_string, const char * str){
     char const *tmp_str = str;                                                      //strの走査用ポインタ
     char *tmp_lib_string = lib_string->string + lib_string->char_num;      //s->stringの走査用ポインタの用意 + 初期位置の設定
 
-    //構造体のメンバに直接アクセスできるようにポインタを取得しておく
-    int *char_num = &lib_string->char_num;
-
     //1文字ずつコピー
     while(*tmp_str){
         *tmp_lib_string = *tmp_str;
-        (*char_num)++;
+        lib_string->char_num++;
         tmp_lib_string++;
         tmp_str++;
     }
@@ -84,12 +81,10 @@ STRING *str_extract(STRING * lib_string, const unsigned int start, const unsigne
     //それぞれの文字列の走査用ポインタを用意。tmp_lib_stringは開始位置をセット
     char *tmp_ret_string = ret_string->string;
     char *tmp_lib_string = lib_string->string + start;
-    //構造体のメンバに直接アクセスできるようにポインタを取得しておく
-    int *char_num = &ret_string->char_num;
     //lib_stringのstart文字目からlast文字までをret_stringにコピーしていく
     for(int i=0; i<chars_num; i++){
         *tmp_ret_string = *tmp_lib_string;
-        (*char_num)++;
+        ret_string->char_num++;
         tmp_ret_string++;
         tmp_lib_string++;
     }
